@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+body{
+    background-image: linear-gradient(60deg,rgb(18, 194, 233),rgb(196, 113, 237),rgb(246, 79, 89));
+}
+.wrap{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}        
+.wrap .item{
+    display: inline-block;
+    width:40px;
+    height: 75px;
+    background: #333;
+    color: #fff;
+    height: 75px;
+    line-height: 75px;
+    /* margin: 10px; */
+    border-radius:15px;
+    text-align: center;
+    font-size: 1.5rem;
+    /* position: relative; */
+}
+.show{
+    position: relative;
+    display: inline-block;
+    width: 40px; 
+    height: 75px;
+    margin: 10px;
+}
+.new_item{
+    position: absolute;
+    top:30px;
+}
+</style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="show"></div>
+        <div class="show"></div>
+        <div class="show"></div>
+        <div class="show"></div>
+        <div class="show"></div>
+        <div class="show"></div>
+        <div class="show"></div>
+        <div class="show"></div>
+        <div class="show"></div>
+        <div class="show"></div>
+        <div class="show"></div>
+        <div class="show"></div>
+    </div>
+    <script>
+        
+        //补零
+        var autoAddZero = (val, len=2) => {
+            var tempStr = ''
+            for(let i=0;i<len;i++){
+                tempStr += '0'
+            }
+      return  (`${tempStr}${val}`).slice(-len)
+    }
+
+        var time = new Date();
+        var str=(`${time.getFullYear()}${autoAddZero(time.getUTCMonth())}${autoAddZero(time.getHours())}${autoAddZero(time.getMinutes())}${autoAddZero(time.getSeconds())}`);
+        console.log(str);
+        var wrap = document.querySelectorAll(".show");
+        //渲染
+        for(i=0;i<wrap.length;i++){
+            var span =  document.createElement("span");
+            span.innerText = str[i];
+            span.classList.add("item");
+            // console.log(span);
+            wrap[i].appendChild(span);
+        }
+        //定时器
+        var refresh = setInterval(() =>{
+            var curr_date = new Date();
+            var span = document.querySelectorAll(".wrap .item");
+            curr_str = (`${curr_date.getFullYear()}${autoAddZero(curr_date.getUTCMonth())}${autoAddZero(curr_date.getHours())}${autoAddZero(curr_date.getMinutes())}${autoAddZero(curr_date.getSeconds())}`);
+            console.log(curr_str);
+            for(i=0;i<curr_str.length;i++){
+                if(str[i]!=curr_str[i]){//字符串判断
+                    var div =  document.createElement("span");
+                    div.classList.add("item");
+                    div.classList.add("new_item");
+                    div.innerText = curr_str[i];
+                    console.log(wrap[i]),span[i];
+                    wrap[i].appendChild(div);
+                    span[i].style.position="absolute";
+                    moveTime(span[i],{"top":-75,"opacity":0},1000,function(){this.remove();});
+                    moveTime(div,{"top":0},1500);
+                    
+                }
+                
+            }
+            //动画结束时将初始时间替换为上一次的时间值
+            str = curr_str;
+        },3000)
+
+
+
+
+    </script>
+    <script src="movetime.js"></script>
+</body>
+</html>
